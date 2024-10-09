@@ -15,7 +15,13 @@ const theme = createTheme({
 });
 let cancelAxios = null;
 function App() {
-  const [temp, setTemp] = useState(null);
+  const [temp, setTemp] = useState({
+    number: null,
+    description: "",
+    min: null,
+    max: null,
+    icon: null,
+  });
   useEffect(() => {
     axios
       .get(
@@ -29,7 +35,19 @@ function App() {
       .then(function (response) {
         // handle success
         const responseTemp = Math.round(response.data.main.temp - 272.15);
-        setTemp(responseTemp);
+
+        const min = Math.round(response.data.main.temp_min - 272.15);
+        const max = Math.round(response.data.main.temp_max - 272.15);
+        const description = response.data.weather[0].description;
+        const responseIcon = response.data.weather[0].icon;
+        setTemp({
+          number: responseTemp,
+          min: min,
+          max: max,
+          description: description,
+          icon: `https://openweathermap.org/img/wn/${responseIcon}@2x.png`,
+        });
+        console.log(min, max, description);
       })
       .catch(function (error) {
         // handle error
@@ -93,14 +111,21 @@ function App() {
                   {/* DEGREE & DESCRIPTION */}
                   <div>
                     {/* TEMP */}
-                    <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
                       <Typography variant="h1" style={{ textAlign: "right" }}>
-                        {temp}
+                        {temp.number}
                       </Typography>
-                      {/* TODO: TEMP IMAGE */}
+                      {/* TEMP IMAGE */}
+                      <img src={temp.icon} />
                     </div>
                     {/*END TEMP */}
-                    <Typography variant="h6">broken clouds</Typography>
+                    <Typography variant="h6">{temp.description}</Typography>
                     {/*  MIN & MAX */}
                     <div
                       style={{
@@ -109,9 +134,9 @@ function App() {
                         alignItems: "center",
                       }}
                     >
-                      <h5>الصغ رى :34</h5>
+                      <h5>الصغرى :{temp.min}</h5>
                       <h5 style={{ margin: "0px 5px" }}>|</h5>
-                      <h5>الكبرى :34</h5>
+                      <h5>الكبرى :{temp.max}</h5>
                     </div>
                   </div>
 
