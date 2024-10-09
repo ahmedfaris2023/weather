@@ -13,12 +13,18 @@ const theme = createTheme({
     fontFamily: ["IBM"],
   },
 });
+let cancelAxios = null;
 function App() {
   const [temp, setTemp] = useState(null);
   useEffect(() => {
     axios
       .get(
-        "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7619956ca0fcb77caba73ae235c5a000"
+        "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7619956ca0fcb77caba73ae235c5a000",
+        {
+          cancelToken: new axios.CancelToken((c) => {
+            cancelAxios = c;
+          }),
+        }
       )
       .then(function (response) {
         // handle success
@@ -29,6 +35,9 @@ function App() {
         // handle error
         console.log(error);
       });
+    return () => {
+      cancelAxios();
+    };
   }, []);
   return (
     <div className="App">
@@ -100,7 +109,7 @@ function App() {
                         alignItems: "center",
                       }}
                     >
-                      <h5>الصغرى :34</h5>
+                      <h5>الصغ رى :34</h5>
                       <h5 style={{ margin: "0px 5px" }}>|</h5>
                       <h5>الكبرى :34</h5>
                     </div>
