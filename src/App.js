@@ -7,7 +7,9 @@ import CloudIcon from "@mui/icons-material/Cloud";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import moment from "moment";
+import "moment/min/locales";
+moment.locale("ar");
 const theme = createTheme({
   typography: {
     fontFamily: ["IBM"],
@@ -15,6 +17,9 @@ const theme = createTheme({
 });
 let cancelAxios = null;
 function App() {
+  console.log(moment());
+
+  const [dateAndTime, setDateAndTime] = useState("");
   const [temp, setTemp] = useState({
     number: null,
     description: "",
@@ -23,6 +28,7 @@ function App() {
     icon: null,
   });
   useEffect(() => {
+    setDateAndTime(moment().format("MMM Do YYYY, h:mm:ss a"));
     axios
       .get(
         "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7619956ca0fcb77caba73ae235c5a000",
@@ -99,7 +105,7 @@ function App() {
                     الرياض
                   </Typography>
                   <Typography variant="h5" style={{ marginRight: "20px" }}>
-                    الاثنين ٢-٢-٢٠٢١
+                    {dateAndTime}
                   </Typography>
                 </div>
                 {/*END CITY & TIME */}
