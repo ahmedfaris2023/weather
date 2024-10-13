@@ -22,7 +22,7 @@ function App() {
   const { t, i18n } = useTranslation();
 
   console.log(moment());
-
+  //==============STATES ==============
   const [dateAndTime, setDateAndTime] = useState("");
   const [temp, setTemp] = useState({
     number: null,
@@ -31,8 +31,22 @@ function App() {
     max: null,
     icon: null,
   });
+  const [locale, setLocale] = useState("ar");
+  //==============EVENT HANDLERS ==============
+  function handleLanguageClick() {
+    if (locale == "en") {
+      setLocale("ar");
+      i18n.changeLanguage("ar");
+      moment.locale("ar");
+    } else {
+      setLocale("en");
+      i18n.changeLanguage("en");
+      moment.locale("en");
+    }
+    setDateAndTime(moment().format("MMM Do YYYY, h:mm:ss a"));
+  }
   useEffect(() => {
-    i18n.changeLanguage("ar");
+    i18n.changeLanguage(locale);
   }, []);
   useEffect(() => {
     setDateAndTime(moment().format("MMM Do YYYY, h:mm:ss a"));
@@ -109,7 +123,7 @@ function App() {
                   dir="rtl"
                 >
                   <Typography variant="h2" style={{ marginRight: "20px" }}>
-                    {t("hello world")}
+                    {t("Riyadh")}
                   </Typography>
                   <Typography variant="h5" style={{ marginRight: "20px" }}>
                     {dateAndTime}
@@ -138,7 +152,7 @@ function App() {
                       <img src={temp.icon} />
                     </div>
                     {/*END TEMP */}
-                    <Typography variant="h6">{temp.description}</Typography>
+                    <Typography variant="h6">{t(temp.description)}</Typography>
                     {/*  MIN & MAX */}
                     <div
                       style={{
@@ -147,9 +161,13 @@ function App() {
                         alignItems: "center",
                       }}
                     >
-                      <h5>الصغرى :{temp.min}</h5>
+                      <h5>
+                        {t("min")} :{temp.min}
+                      </h5>
                       <h5 style={{ margin: "0px 5px" }}>|</h5>
-                      <h5>الكبرى :{temp.max}</h5>
+                      <h5>
+                        {t("min")} :{temp.max}
+                      </h5>
                     </div>
                   </div>
 
@@ -171,8 +189,12 @@ function App() {
                 marginTop: "20px",
               }}
             >
-              <Button variant="text" style={{ color: "white" }}>
-                انجليزي
+              <Button
+                variant="text"
+                style={{ color: "white" }}
+                onClick={handleLanguageClick}
+              >
+                {locale == "en" ? "Arabic" : "انجليزي"}
               </Button>
             </div>
             {/* END TRANSLATION CONTAINER */}
