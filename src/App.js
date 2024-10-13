@@ -101,7 +101,7 @@ function App() {
           >
             {/* CARD */}
             <div
-              dir="rtl"
+              dir={locale == "en" ? "ltr" : "rtl"}
               style={{
                 width: "100%",
                 background: "rgb(28 52 91 /36%)",
@@ -120,7 +120,7 @@ function App() {
                     alignItems: "end",
                     justifyContent: "start",
                   }}
-                  dir="rtl"
+                  dir={locale == "en" ? "ltr" : "rtl"}
                 >
                   <Typography variant="h2" style={{ marginRight: "20px" }}>
                     {t("Riyadh")}
@@ -181,7 +181,7 @@ function App() {
             {/* End CARD */}
             {/* TRANSLATION CONTAINER */}
             <div
-              dir="rtl"
+              dir={locale == "en" ? "ltr" : "rtl"}
               style={{
                 display: "flex",
                 justifyContent: "end",
