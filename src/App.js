@@ -10,7 +10,9 @@ import axios from "axios";
 import moment from "moment";
 import "moment/min/locales";
 import { useTranslation } from "react-i18next";
-
+import { changeResult } from "./weatherApiSlice";
+// REDUX IMPORT
+import { useSelector, useDispatch } from "react-redux";
 moment.locale("ar");
 const theme = createTheme({
   typography: {
@@ -19,6 +21,12 @@ const theme = createTheme({
 });
 let cancelAxios = null;
 function App() {
+  // REDUX CORE
+  const dispatch = useDispatch();
+  const result = useSelector((state) => {
+    console.log("the state is", state);
+    return state.result;
+  });
   const { t, i18n } = useTranslation();
 
   console.log(moment());
@@ -46,6 +54,7 @@ function App() {
     setDateAndTime(moment().format("MMM Do YYYY, h:mm:ss a"));
   }
   useEffect(() => {
+    dispatch(changeResult());
     i18n.changeLanguage(locale);
   }, []);
   useEffect(() => {
