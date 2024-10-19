@@ -23,29 +23,22 @@ const theme = createTheme({
     fontFamily: ["IBM"],
   },
 });
-let cancelAxios = null;
 function App() {
   // REDUX CORE
   const dispatch = useDispatch();
-  const result = useSelector((state) => {
-    console.log("the state is", state);
-    return state.result;
-  });
+
   const isLoading = useSelector((state) => {
     return state.weather.isLoading;
+  });
+  const temp = useSelector((state) => {
+    return state.weather.weather;
   });
   const { t, i18n } = useTranslation();
 
   console.log(moment());
   //==============STATES ==============
   const [dateAndTime, setDateAndTime] = useState("");
-  const [temp, setTemp] = useState({
-    number: null,
-    description: "",
-    min: null,
-    max: null,
-    icon: null,
-  });
+
   const [locale, setLocale] = useState("ar");
   //==============EVENT HANDLERS ==============
   function handleLanguageClick() {
@@ -68,39 +61,6 @@ function App() {
   }, []);
   useEffect(() => {
     setDateAndTime(moment().format("MMM Do YYYY, h:mm:ss a"));
-    axios
-      .get(
-        "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7619956ca0fcb77caba73ae235c5a000",
-        {
-          cancelToken: new axios.CancelToken((c) => {
-            cancelAxios = c;
-          }),
-        }
-      )
-      .then(function (response) {
-        // handle success
-        const responseTemp = Math.round(response.data.main.temp - 272.15);
-
-        const min = Math.round(response.data.main.temp_min - 272.15);
-        const max = Math.round(response.data.main.temp_max - 272.15);
-        const description = response.data.weather[0].description;
-        const responseIcon = response.data.weather[0].icon;
-        setTemp({
-          number: responseTemp,
-          min: min,
-          max: max,
-          description: description,
-          icon: `https://openweathermap.org/img/wn/${responseIcon}@2x.png`,
-        });
-        console.log(min, max, description);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-    return () => {
-      cancelAxios();
-    };
   }, []);
   return (
     <div className="App">

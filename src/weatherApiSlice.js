@@ -28,6 +28,13 @@ export const fetchWeather = createAsyncThunk(
     //     description: description,
     //     icon: `https://openweathermap.org/img/wn/${responseIcon}@2x.png`,
     //   });
+    return {
+      number: responseTemp,
+      min,
+      max,
+      description,
+      icon: `https://openweathermap.org/img/wn/${responseIcon}@2x.png`,
+    };
   }
 );
 
@@ -52,6 +59,7 @@ const weatherApiSlice = createSlice({
       })
       .addCase(fetchWeather.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.weather = action.payload;
       })
       .addCase(fetchWeather.rejected, (state, action) => {
         state.isLoading = false;
